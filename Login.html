@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Student Course System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <form class="login-box">
+      <h2>Student Course System</h2>
+      <p class="subtitle">Login to your account</p>
+
+      <div class="input-group">
+        <label for="email">Email / Username</label>
+        <input type="text" id="email" placeholder="Enter your email or username" required>
+      </div>   
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+
+      <button type="button" onclick="Home(email.value, password.value)">Login</button>
+
+      <p class="footer-text">Don’t have an account? <a href="./Signup.html">Register</a></p>
+    </form>
+  </div>
+
+  <script src="funct.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | Student Course System</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background-color: #f4f8ff;
+    }
+
+    .container {
+      margin-top: 30px;
+    }
+
+    .course-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    .course-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .completed {
+      background-color: #d4edda !important;
+    }
+
+    .completed-btn {
+      background-color: #28a745 !important;
+      color: white;
+      border: none;
+    }
+
+    .search-bar {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    .search-bar input {
+      border-radius: 25px;
+      padding: 10px 20px;
+      border: 1px solid #ced4da;
+      width: 100%;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <h2 class="mb-4">🎓 Student Course System</h2>
+
+    <!-- 🔍 Search Bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by course name, code, or department..."
+      />
+    </div>
+
+    <!-- ✅ Progress Info -->
+    <div class="progress my-4" style="height: 25px;">
+      <div
+        id="progressBar"
+        class="progress-bar bg-success"
+        role="progressbar"
+        style="width: 0%"
+      >
+        0% Completed
+      </div>
+    </div>
+
+    <!-- 🧾 Courses Grid -->
+    <div id="courseList" class="row g-4"></div>
+  </div>
+
+  <script>
+    const courses = [
+      { code: "C101", title: "C Programming", credits: 4, dept: "Computer Science", instructors: ["Dr. Ramesh Kumar"], youtube: "https://www.w3schools.com/c/index.php" },
+      { code: "C102", title: "Object Oriented Programming with C++", credits: 3, dept: "Computer Science", instructors: ["Prof. Sneha Raj"], youtube: "https://www.geeksforgeeks.org/c-plus-plus/" },
+      { code: "C103", title: "DBMS (Database Management System)", credits: 3, dept: "Computer Science", instructors: ["Dr. Nisha Rao"], youtube: "https://www.w3schools.com/sql/default.asp" },
+      { code: "C104", title: "Operating Systems", credits: 3, dept: "Computer Science", instructors: ["Dr. Anil Patel"], youtube: "https://www.youtube.com/watch?v=26QPDBe-NB8" },
+      { code: "C105", title: "Data Structures", credits: 4, dept: "Computer Science", instructors: ["Prof. Divya Reddy"], youtube: "https://www.w3schools.com/dsa/index.php" },
+      { code: "C106", title: "Java Programming", credits: 3, dept: "Computer Science", instructors: ["Prof. Raghav Sharma"], youtube: "https://www.w3schools.com/java/default.asp" },
+      { code: "C107", title: "Computer Networks", credits: 4, dept: "Computer Science", instructors: ["Dr. Ravi Teja"], youtube: "https://www.geeksforgeeks.org/computer-network-tutorials/" },
+      { code: "C108", title: "Python Programming", credits: 3, dept: "Computer Science", instructors: ["Dr. Sneha Reddy"], youtube: "https://www.w3schools.com/python/default.asp" },
+      { code: "C109", title: "Artificial Intelligence", credits: 4, dept: "Computer Science", instructors: ["Dr. Mohan Raj"], youtube: "https://www.geeksforgeeks.org/artificial-intelligence-an-introduction/" },
+      { code: "C110", title: "Machine Learning", credits: 4, dept: "Computer Science", instructors: ["Dr. Keerthi Narayan"], youtube: "https://www.geeksforgeeks.org/machine-learning/" },
+      { code: "IT201", title: "Web Technologies", credits: 3, dept: "Information Technology", instructors: ["Prof. Kavya Menon"], youtube: "https://www.w3schools.com/html/default.asp" },
+      { code: "IT202", title: "Cyber Security", credits: 3, dept: "Information Technology", instructors: ["Dr. Arvind Joshi"], youtube: "https://www.geeksforgeeks.org/cyber-security-tutorials/" },
+      { code: "IT203", title: "Cloud Computing", credits: 4, dept: "Information Technology", instructors: ["Dr. Asha Mehta"], youtube: "https://www.youtube.com/watch?v=2LaAJq1lB1Q" },
+      { code: "ECE301", title: "Digital Electronics", credits: 4, dept: "Electronics and Communication Engineering", instructors: ["Dr. Rajesh Iyer"], youtube: "https://www.geeksforgeeks.org/digital-electronics/" },
+      { code: "ECE302", title: "Analog Communication", credits: 3, dept: "Electronics and Communication Engineering", instructors: ["Dr. Usha Varma"], youtube: "https://www.youtube.com/watch?v=bkKaDyeV7Bw" },
+      { code: "ECE303", title: "Microprocessors and Microcontrollers", credits: 4, dept: "Electronics and Communication Engineering", instructors: ["Prof. Rajendra Singh"], youtube: "https://www.geeksforgeeks.org/8085-microprocessor/" },
+      { code: "ME301", title: "Engineering Mechanics", credits: 3, dept: "Mechanical Engineering", instructors: ["Prof. Suresh Kumar"], youtube: "https://www.youtube.com/watch?v=QO5Pqzdrjv0" },
+      { code: "ME302", title: "Thermodynamics", credits: 3, dept: "Mechanical Engineering", instructors: ["Prof. Aruna Sharma"], youtube: "https://www.youtube.com/watch?v=tzc1h5R3LzE" },
+      { code: "ME303", title: "Fluid Mechanics", credits: 3, dept: "Mechanical Engineering", instructors: ["Dr. Meena Patel"], youtube: "https://www.youtube.com/watch?v=HEj-QljWXgs&list=PLm_MSClsnwm-0hJKaJrnYbIVNOUudxj7O" },
+      { code: "CE204", title: "Structural Analysis", credits: 3, dept: "Civil Engineering", instructors: ["Dr. Priya Nair"], youtube: "https://www.youtube.com/watch?v=qQ9wZyhTozA" },
+      { code: "CE205", title: "Surveying and Geomatics", credits: 3, dept: "Civil Engineering", instructors: ["Prof. Kiran Das"], youtube: "https://www.youtube.com/watch?v=qlCl_VnF7lw" },
+      { code: "EE301", title: "Electrical Machines", credits: 4, dept: "Electrical Engineering", instructors: ["Dr. Harish Chandra"], youtube: "https://www.geeksforgeeks.org/electrical-machines/" },
+      { code: "EE302", title: "Power Systems", credits: 4, dept: "Electrical Engineering", instructors: ["Prof. Preeti Bansal"], youtube: "https://www.youtube.com/watch?v=l7vxxGpvxN0" }
+    ];
+
+    const completedCourses = new Set(JSON.parse(localStorage.getItem("completedCourses")) || []);
+    const courseList = document.getElementById("courseList");
+    const searchInput = document.getElementById("searchInput");
+    const progressBar = document.getElementById("progressBar");
+
+    function updateProgress() {
+      const percent = Math.round((completedCourses.size / courses.length) * 100);
+      progressBar.style.width = percent + "%";
+      progressBar.textContent = percent + "% Completed";
+    }
+
+    function renderCourses(filter = "") {
+      courseList.innerHTML = "";
+      const filtered = courses.filter(c =>
+        c.title.toLowerCase().includes(filter) ||
+        c.code.toLowerCase().includes(filter) ||
+        c.dept.toLowerCase().includes(filter)
+      );
+
+      filtered.forEach(course => {
+        const col = document.createElement("div");
+        col.className = "col-md-4";
+        const isCompleted = completedCourses.has(course.code);
+
+        col.innerHTML = `
+          <div class="p-3 course-card ${isCompleted ? "completed" : ""}">
+            <h5>${course.title}</h5>
+            <p><b>Code:</b> ${course.code}</p>
+            <p><b>Credits:</b> ${course.credits}</p>
+            <p><b>Department:</b> ${course.dept}</p>
+            <p><b>Instructor(s):</b> <a href="${course.youtube}" target="_blank">${course.instructors.join(", ")}</a></p>
+            <button class="btn ${isCompleted ? "completed-btn" : "btn-primary"} w-100" onclick="toggleCompleted('${course.code}')">
+              ${isCompleted ? "✔ Completed" : "Mark as Completed"}
+            </button>
+          </div>`;
+        courseList.appendChild(col);
+      });
+
+      updateProgress();
+    }
+
+    function toggleCompleted(code) {
+      if (completedCourses.has(code)) {
+        completedCourses.delete(code);
+      } else {
+        completedCourses.add(code);
+      }
+      localStorage.setItem("completedCourses", JSON.stringify([...completedCourses]));
+      renderCourses(searchInput.value.toLowerCase());
+    }
+
+    searchInput.addEventListener("input", e => renderCourses(e.target.value.toLowerCase()));
+    renderCourses();
+  </script>
+</body>
+</html>
